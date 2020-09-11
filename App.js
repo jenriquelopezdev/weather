@@ -17,26 +17,35 @@ const App = () => {
     })
 
     const [consult, saveConsult] = useState(false)
+    const [result, saveResult] = useState({})
 
     const {city, country} = search;
 
     useEffect(() => {
-        if (consult) {
-            const appId = '4e04073029c58e4fc319fd01cdc6319b';
-            const url = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${appId}`;
+        const checkWeather = async () => {
+            if (consult) {
+                const appId = '4e04073029c58e4fc319fd01cdc6319b';
+                const url = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${appId}`;
 
-            try {
+                try {
+                    const response = await fetch(url);
+                    const result = await response.json();
 
-            } catch (error) {
-
+                    saveConsult(false);
+                    saveResult(result);
+                    
+                } catch (error) {
+                    showAlert();
+                }
             }
         }
+        checkWeather();
     }, [consult])
 
     const showAlert = () => {
         Alert.alert(
             'Error',
-            'Add a city and country to search',
+            'No results, try another city or country',
             [{text: ' OK'}]
         )
     }
