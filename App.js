@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {
-    SafeAreaView,
     StyleSheet,
-    ScrollView,
     View,
     Keyboard,
     TouchableWithoutFeedback, Alert,
 } from 'react-native';
 import Form from './components/Form';
+import Weather from './components/Weather';
 
 const App = () => {
 
@@ -33,7 +32,7 @@ const App = () => {
 
                     saveConsult(false);
                     saveResult(result);
-                    
+
                 } catch (error) {
                     showAlert();
                 }
@@ -60,6 +59,9 @@ const App = () => {
             <TouchableWithoutFeedback onPress={() => hideKeyboard()}>
                 <View style={styles.app}>
                     <View style={styles.container}>
+                        <Weather
+                            result={result}
+                        />
                         <Form
                             search={search}
                             saveSearch={saveSearch}
