@@ -18,7 +18,13 @@ const App = () => {
     const [consult, saveConsult] = useState(false)
     const [result, saveResult] = useState({})
 
+    const [bgColor, saveBgColor] = useState('rgb(71, 149, 212)')
+
     const {city, country} = search;
+
+    const bgColorApp = {
+        backgroundColor: bgColor
+    }
 
     useEffect(() => {
         const checkWeather = async () => {
@@ -32,6 +38,22 @@ const App = () => {
 
                     saveConsult(false);
                     saveResult(result);
+
+                    //Modify background colors based on temperature
+
+                    // Kelvin degrees
+                    const kelvin = 273.15;
+
+                    const {main} = result;
+                    const current = main.temp - kelvin;
+
+                    if (current < 10) {
+                        saveBgColor('rgb(105, 108, 149)')
+                    } else if (current >= 10 && current < 25) {
+                        saveBgColor('rgb(71, 149, 212)')
+                    } else {
+                        saveBgColor('rgb(178, 28, 61)')
+                    }
 
                 } catch (error) {
                     showAlert();
@@ -57,7 +79,7 @@ const App = () => {
     return (
         <>
             <TouchableWithoutFeedback onPress={() => hideKeyboard()}>
-                <View style={styles.app}>
+                <View style={[styles.app, bgColorApp]}>
                     <View style={styles.container}>
                         <Weather
                             result={result}
@@ -77,7 +99,6 @@ const App = () => {
 const styles = StyleSheet.create({
     app: {
         flex: 1,
-        backgroundColor: 'rgb(71, 149, 212)',
         justifyContent: 'center'
     },
     container: {

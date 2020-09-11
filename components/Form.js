@@ -67,6 +67,7 @@ const Form = ({search, saveSearch, saveConsult}) => {
                         <Picker.Item label='Argentina' value='AR'/>
                         <Picker.Item label='Colombia' value='CO'/>
                         <Picker.Item label='España' value='ES'/>
+                        <Picker.Item label='Guatemala' value='GT'/>
                     </Picker>
                 </View>
                 <TouchableWithoutFeedback

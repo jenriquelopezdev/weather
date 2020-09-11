@@ -7,7 +7,7 @@ const Weather = ({result}) => {
 
     if (!name) return null;
 
-    // grados kelvin
+    // Kelvin degrees
     const kelvin = 273.15;
 
     console.log(result)
