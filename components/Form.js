@@ -1,9 +1,28 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, TouchableWithoutFeedback, Text, Animated} from 'react-native';
+import {View, TextInput, StyleSheet, TouchableWithoutFeedback, Text, Animated, Alert} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 
-const Form = () => {
+const Form = ({search, saveSearch, saveConsult}) => {
+    const {country, city} = search;
+
     const [animationBtn] = useState(new Animated.Value(1));
+
+    const checkWeather = () => {
+        if (country.trim() === '' || city.trim() === '') {
+            showAlert();
+            return;
+        }
+        //consulting the api
+        saveConsult(true)
+    }
+
+    const showAlert = () => {
+        Alert.alert(
+            'Error',
+            'Add a city and country to search',
+            [{text: ' OK'}]
+        )
+    }
 
     const styleAnimate = {
         transform: [{scale: animationBtn}]
@@ -29,14 +48,19 @@ const Form = () => {
             <View style={styles.form}>
                 <View>
                     <TextInput
+                        value={city}
                         style={styles.input}
-                        placeholder='city'
+                        onChangeText={city => saveSearch({...search, city})}
+                        placeholder='City'
                         placeholderTextColor='#666'
                     />
                 </View>
                 <View>
                     <Picker
-                        itemStyle={{height: 120, backgroundColor: '#fff'}}>
+                        selectedValue={country}
+                        itemStyle={{height: 120, backgroundColor: '#fff'}}
+                        onValueChange={country => saveSearch({...search, country})}
+                    >
                         <Picker.Item label='Select country' value=''/>
                         <Picker.Item label='Estados unidos' value='US'/>
                         <Picker.Item label='Mexico' value='MX'/>
@@ -48,6 +72,7 @@ const Form = () => {
                 <TouchableWithoutFeedback
                     onPressIn={() => animationInput()}
                     onPressOut={() => animationOutput()}
+                    onPress={() => checkWeather()}
                 >
                     <Animated.View
                         style={[styles.btnSearch, styleAnimate]}>
